@@ -1,6 +1,6 @@
 # Brighton Bus Times for Home Assistant
 
-A custom Home Assistant integration for live and scheduled bus departures in Brighton and Hove, powered by [Brighton Bus Times](https://buses.subwavenetwork.uk).
+A custom Home Assistant integration for live and scheduled bus departures in Brighton and Hove, powered by [Brighton Bus Times](https://brightonbustimes.co.uk).
 
 It creates one **Next departure** sensor for each selected stop and includes an LED-style dashboard card inspired by Brighton's roadside bus signs.
 
@@ -80,7 +80,7 @@ You can alternatively enter one or more NaPTAN stop IDs manually. Separate multi
 The integration uses this API by default:
 
 ```text
-https://buses.subwavenetwork.uk
+https://brightonbustimes.co.uk
 ```
 
 ## Changing stops
@@ -183,7 +183,7 @@ Restart Home Assistant afterwards. A browser or app refresh may also be needed w
 
 ### The API cannot be reached
 
-Confirm that the Home Assistant host can reach `https://buses.subwavenetwork.uk`. If the service is temporarily unavailable, Home Assistant retains the previous data and reports the coordinator update as failed.
+Confirm that the Home Assistant host can reach `https://brightonbustimes.co.uk`. If the service is temporarily unavailable, Home Assistant retains the previous data and reports the coordinator update as failed.
 
 ## Repository layout
 
