@@ -1,0 +1,58 @@
+{
+  "title": "Brighton Bus Times",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Brighton Bus Times",
+        "description": "Search for a stop by name and press Submit. You can then select one or more matching stops. Manual NaPTAN IDs remain available as an advanced alternative.",
+        "data": {
+          "url": "API base URL",
+          "stop_name": "Search for a stop by name",
+          "stop_ids": "Manual stop IDs (optional)",
+          "scan_interval": "Refresh interval (seconds)"
+        }
+      },
+      "select_stops": {
+        "title": "Select bus stops",
+        "description": "Select one or more matching stops. The direction indicators distinguish stops on opposite sides of the road.",
+        "data": {
+          "stop_ids": "Matching stops"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot connect to the bus times API.",
+      "invalid_response": "The API returned an unexpected response.",
+      "invalid_stops": "These stop IDs were not found: {invalid_stops}",
+      "search_required": "Enter at least two characters of a stop name, or supply a manual stop ID.",
+      "no_stops_found": "No matching bus stops were found. Try a shorter search."
+    },
+    "abort": {
+      "already_configured": "This bus times API is already configured. Use Configure to add more stops."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Bus Times options",
+        "description": "Add or remove NaPTAN stop IDs and choose how frequently departures are refreshed.",
+        "data": {
+          "stop_ids": "Stop IDs",
+          "scan_interval": "Refresh interval (seconds)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot connect to the bus times API.",
+      "invalid_response": "The API returned an unexpected response.",
+      "invalid_stops": "These stop IDs were not found: {invalid_stops}"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "next_departure": {
+        "name": "Next departure"
+      }
+    }
+  }
+}

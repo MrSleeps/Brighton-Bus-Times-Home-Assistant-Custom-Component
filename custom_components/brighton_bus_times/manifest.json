@@ -1,0 +1,18 @@
+{
+  "domain": "brighton_bus_times",
+  "name": "Brighton Bus Times",
+  "codeowners": [
+    "@MrSleeps"
+  ],
+  "config_flow": true,
+  "dependencies": [
+    "http",
+    "lovelace"
+  ],
+  "documentation": "https://github.com/MrSleeps/Brighton-Bus-Times-Home-Assistant-Custom-Component",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/MrSleeps/Brighton-Bus-Times-Home-Assistant-Custom-Component/issues",
+  "requirements": [],
+  "version": "1.0.0"
+}
