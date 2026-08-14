@@ -84,8 +84,6 @@ Select Add integration.
 
 Search for Brighton Bus Times.
 
-Leave the API URL at its default value unless you run a compatible API yourself.
-
 Enter at least two characters of a stop name and submit the form.
 
 Select one or more matching stops. Directional indicators help distinguish stops on opposite sides of the road.
@@ -94,9 +92,9 @@ Choose the refresh interval and complete setup.
 
 You can alternatively enter one or more NaPTAN stop IDs manually. Separate multiple IDs with commas or new lines.
 
-The integration uses this API by default:
+The integration always uses this API:
 
-https://brightonbustimes.co.uk
+https://brightonbustimes.uk
 
 Changing stops
 
@@ -213,7 +211,7 @@ Enter the stop's NaPTAN ID manually if you know it.
 
 The API cannot be reached
 
-Confirm that the Home Assistant host can reach https://brightonbustimes.co.uk. If the service is temporarily unavailable, Home Assistant retains the previous data and reports the coordinator update as failed.
+Confirm that the Home Assistant host can reach https://brightonbustimes.uk. If the service is temporarily unavailable, Home Assistant retains the previous data and reports the coordinator update as failed.
 
 Repository layout
 
