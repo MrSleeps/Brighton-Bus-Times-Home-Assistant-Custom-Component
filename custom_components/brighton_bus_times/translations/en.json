@@ -6,7 +6,6 @@
         "title": "Connect to Brighton Bus Times",
         "description": "Search for a stop by name and press Submit. You can then select one or more matching stops. Manual NaPTAN IDs remain available as an advanced alternative.",
         "data": {
-          "url": "API base URL",
           "stop_name": "Search for a stop by name",
           "stop_ids": "Manual stop IDs (optional)",
           "scan_interval": "Refresh interval (seconds)"

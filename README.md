@@ -1,6 +1,6 @@
 # Brighton Bus Times for Home Assistant
 
-A custom Home Assistant integration for live and scheduled bus departures in Brighton and Hove, powered by [Brighton Bus Times](https://brightonbustimes.co.uk).
+A custom Home Assistant integration for live and scheduled bus departures in Brighton and Hove, powered by [Brighton Bus Times](https://brightonbustimes.uk).
 
 It creates one **Next departure** sensor for each selected stop and includes an LED-style dashboard card inspired by Brighton's roadside bus signs.
 
@@ -70,17 +70,16 @@ After installing and restarting Home Assistant:
 1. Open **Settings → Devices & services**.
 2. Select **Add integration**.
 3. Search for **Brighton Bus Times**.
-4. Leave the API URL at its default value unless you run a compatible API yourself.
-5. Enter at least two characters of a stop name and submit the form.
-6. Select one or more matching stops. Directional indicators help distinguish stops on opposite sides of the road.
-7. Choose the refresh interval and complete setup.
+4. Enter at least two characters of a stop name and submit the form.
+5. Select one or more matching stops. Directional indicators help distinguish stops on opposite sides of the road.
+6. Choose the refresh interval and complete setup.
 
 You can alternatively enter one or more NaPTAN stop IDs manually. Separate multiple IDs with commas or new lines.
 
-The integration uses this API by default:
+The integration always uses this API:
 
 ```text
-https://brightonbustimes.co.uk
+https://brightonbustimes.uk
 ```
 
 ## Changing stops
@@ -183,7 +182,7 @@ Restart Home Assistant afterwards. A browser or app refresh may also be needed w
 
 ### The API cannot be reached
 
-Confirm that the Home Assistant host can reach `https://brightonbustimes.co.uk`. If the service is temporarily unavailable, Home Assistant retains the previous data and reports the coordinator update as failed.
+Confirm that the Home Assistant host can reach `https://brightonbustimes.uk`. If the service is temporarily unavailable, Home Assistant retains the previous data and reports the coordinator update as failed.
 
 ## Repository layout
 

@@ -7,7 +7,6 @@ from typing import Any
 import voluptuous as vol
 
 from homeassistant.config_entries import ConfigEntry, ConfigFlow, ConfigFlowResult, OptionsFlow
-from homeassistant.const import CONF_URL
 from homeassistant.core import callback
 from homeassistant.helpers import selector
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
@@ -40,14 +39,12 @@ def _normalise_stop_ids(value: str | list[str]) -> list[str]:
 
 
 def _schema(
-    default_url: str,
     default_query: str,
     default_stops: list[str],
     default_interval: int,
 ) -> vol.Schema:
     return vol.Schema(
         {
-            vol.Required(CONF_URL, default=default_url): str,
             vol.Optional(CONF_STOP_QUERY, default=default_query): str,
             vol.Optional(
                 CONF_STOP_IDS,
@@ -65,7 +62,7 @@ async def _validate_input(hass, user_input: dict[str, Any]) -> tuple[list[str], 
     stop_ids = _normalise_stop_ids(user_input[CONF_STOP_IDS])
     if not stop_ids:
         raise BusTimesInvalidStopsError([])
-    client = BusTimesApiClient(async_get_clientsession(hass), user_input[CONF_URL])
+    client = BusTimesApiClient(async_get_clientsession(hass), DEFAULT_BASE_URL)
     payload = await client.async_validate_stops(stop_ids)
     return stop_ids, payload
 
@@ -73,10 +70,9 @@ async def _validate_input(hass, user_input: dict[str, Any]) -> tuple[list[str], 
 class BusTimesConfigFlow(ConfigFlow, domain=DOMAIN):
     """Handle initial setup."""
 
-    VERSION = 1
+    VERSION = 2
 
     def __init__(self) -> None:
-        self._pending_url = DEFAULT_BASE_URL
         self._pending_interval = DEFAULT_SCAN_INTERVAL
         self._search_results: list[dict[str, str]] = []
 
@@ -106,7 +102,7 @@ class BusTimesConfigFlow(ConfigFlow, domain=DOMAIN):
             else:
                 client = BusTimesApiClient(
                     async_get_clientsession(self.hass),
-                    user_input[CONF_URL],
+                    DEFAULT_BASE_URL,
                 )
                 try:
                     results = await client.async_search_stops(query)
@@ -118,7 +114,6 @@ class BusTimesConfigFlow(ConfigFlow, domain=DOMAIN):
                     if not results:
                         errors["base"] = "no_stops_found"
                     else:
-                        self._pending_url = user_input[CONF_URL].rstrip("/")
                         self._pending_interval = user_input[CONF_SCAN_INTERVAL]
                         self._search_results = results
                         return await self.async_step_select_stops()
@@ -127,7 +122,6 @@ class BusTimesConfigFlow(ConfigFlow, domain=DOMAIN):
         return self.async_show_form(
             step_id="user",
             data_schema=_schema(
-                defaults.get(CONF_URL, DEFAULT_BASE_URL),
                 defaults.get(CONF_STOP_QUERY, ""),
                 _normalise_stop_ids(defaults.get(CONF_STOP_IDS, [])),
                 defaults.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL),
@@ -147,7 +141,6 @@ class BusTimesConfigFlow(ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             stop_ids = _normalise_stop_ids(user_input.get(CONF_STOP_IDS, []))
             validation_input = {
-                CONF_URL: self._pending_url,
                 CONF_STOP_IDS: stop_ids,
                 CONF_SCAN_INTERVAL: self._pending_interval,
             }
@@ -203,13 +196,12 @@ class BusTimesConfigFlow(ConfigFlow, domain=DOMAIN):
         payload: dict[str, Any],
     ) -> ConfigFlowResult:
         """Create the config entry after IDs have been validated."""
-        await self.async_set_unique_id(user_input[CONF_URL].rstrip("/").lower())
+        await self.async_set_unique_id(DOMAIN)
         self._abort_if_unique_id_configured()
         names = [payload["stops"][stop_id]["stop"]["name"] for stop_id in stop_ids]
         return self.async_create_entry(
             title=f"Bus Times ({', '.join(names)})",
             data={
-                CONF_URL: user_input[CONF_URL].rstrip("/"),
                 CONF_STOP_IDS: stop_ids,
                 CONF_SCAN_INTERVAL: user_input[CONF_SCAN_INTERVAL],
             },
@@ -237,7 +229,7 @@ class BusTimesOptionsFlow(OptionsFlow):
         )
 
         if user_input is not None:
-            validation_input = {CONF_URL: self._entry.data[CONF_URL], **user_input}
+            validation_input = user_input
             try:
                 stop_ids, _ = await _validate_input(self.hass, validation_input)
             except BusTimesInvalidStopsError as err:
