@@ -7,13 +7,13 @@ from pathlib import Path
 
 from homeassistant.components.http import StaticPathConfig
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_URL, Platform
+from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 import homeassistant.helpers.config_validation as cv
 
 from .api import BusTimesApiClient
-from .const import DOMAIN
+from .const import DEFAULT_BASE_URL, DOMAIN
 from .coordinator import BusTimesDataUpdateCoordinator
 
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
@@ -70,9 +70,27 @@ async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     return True
 
 
+async def async_migrate_entry(
+    hass: HomeAssistant,
+    entry: BusTimesConfigEntry,
+) -> bool:
+    """Remove the legacy per-entry API URL."""
+    if entry.version == 1:
+        data = dict(entry.data)
+        data.pop("url", None)
+        hass.config_entries.async_update_entry(
+            entry,
+            data=data,
+            unique_id=DOMAIN,
+            version=2,
+        )
+
+    return True
+
+
 async def async_setup_entry(hass: HomeAssistant, entry: BusTimesConfigEntry) -> bool:
     """Set up Brighton Bus Times from a config entry."""
-    client = BusTimesApiClient(async_get_clientsession(hass), entry.data[CONF_URL])
+    client = BusTimesApiClient(async_get_clientsession(hass), DEFAULT_BASE_URL)
     coordinator = BusTimesDataUpdateCoordinator(hass, entry, client)
     await coordinator.async_config_entry_first_refresh()
     entry.runtime_data = coordinator
