@@ -12,7 +12,7 @@ from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN
+from .const import DEFAULT_BASE_URL, DOMAIN
 from .coordinator import BusTimesDataUpdateCoordinator
 
 
@@ -54,7 +54,7 @@ class BusStopDepartureSensor(CoordinatorEntity[BusTimesDataUpdateCoordinator], S
             name=stop.get("name", f"Bus stop {self._stop_id}"),
             manufacturer="Brighton Bus Times",
             model="Bus stop",
-            configuration_url=f"{self.coordinator.entry.data['url']}/bus/stop/{self._stop_id}",
+            configuration_url=f"{DEFAULT_BASE_URL}/bus/stop/{self._stop_id}",
         )
 
     @property
@@ -93,4 +93,3 @@ class BusStopDepartureSensor(CoordinatorEntity[BusTimesDataUpdateCoordinator], S
             "live_cache_age_seconds": stop_data.get("live_cache_age_seconds"),
             "source": stop_data.get("source"),
         }
-
