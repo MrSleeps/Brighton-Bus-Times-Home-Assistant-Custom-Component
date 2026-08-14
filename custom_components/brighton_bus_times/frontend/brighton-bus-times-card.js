@@ -437,7 +437,7 @@ window.customCards.push({
   name: "Brighton Bus Times",
   description: "Amber LED-style live bus departure board",
   preview: true,
-  documentationURL: "https://buses.subwavenetwork.uk",
+  documentationURL: "https://brightonbustimes.uk",
 });
 
 console.info(`%c BRIGHTON BUS TIMES CARD %c v${CARD_VERSION} `, "color:#ffffff;background:#64CCC9;font-weight:bold", "color:#ffffff;background:#065361");
