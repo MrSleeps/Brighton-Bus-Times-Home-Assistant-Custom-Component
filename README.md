@@ -101,6 +101,12 @@ The sensor attributes include:
 - Routes serving the stop
 - Feed update, cache, and source information
 
+The complete `departures` and `routes_serving_stop` lists remain available as live
+sensor attributes for dashboards, templates, and automations, but are excluded
+from Home Assistant Recorder history. Only smaller attributes and the sensor's
+next-departure state are recorded. This avoids Recorder's 16 KiB attribute
+limit at busy stops without affecting the bundled LED departure-board card.
+
 ## LED departure-board card
 
 The integration bundles the **Brighton Bus Times** Lovelace card. On systems using storage-managed Lovelace resources, the integration registers the JavaScript module automatically.
