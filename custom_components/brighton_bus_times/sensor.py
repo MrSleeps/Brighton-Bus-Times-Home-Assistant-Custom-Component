@@ -33,6 +33,10 @@ class BusStopDepartureSensor(CoordinatorEntity[BusTimesDataUpdateCoordinator], S
     _attr_icon = "mdi:bus-clock"
     _attr_native_unit_of_measurement = UnitOfTime.MINUTES
 
+    # Departure board data remains available to dashboards and automations, but
+    # these potentially large lists must not be stored in Recorder history.
+    _unrecorded_attributes = frozenset({"departures", "routes_serving_stop"})
+
     def __init__(self, coordinator: BusTimesDataUpdateCoordinator, stop_id: str) -> None:
         super().__init__(coordinator)
         self._stop_id = stop_id
